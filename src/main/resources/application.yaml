@@ -1,0 +1,24 @@
+spring:
+  datasource:
+    url: ${DATABASE_URL}
+    username: ${DATABASE_USERNAME}
+    password: ${DATABASE_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: none
+      default_schema: ${APP_MYSQL_SCHEMA:provider}
+      dialect: org.hibernate.dialect.MySQLDialect
+      show_sql: false
+  liquibase:
+    enabled: true
+    change-log: db/changelog/changelog-master.xml
+    default-schema: ${APP_MYSQL_SCHEMA:provider}
+
+jwt:
+  access:
+    secret: ${JWT_ACCESS_SECRET}
+    expiration: ${JWT_ACCESS_EXPIRATION}
+
+app:
+  init-fake-data: false
