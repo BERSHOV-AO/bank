@@ -1,19 +1,27 @@
 spring:
-  datasource:
-    url: ${DATABASE_URL}
-    username: ${DATABASE_USERNAME}
-    password: ${DATABASE_PASSWORD}
-    driver-class-name: com.mysql.cj.jdbc.Driver
+  cloud:
+    config:
+      enabled: false
+
   jpa:
     hibernate:
       ddl-auto: none
-      default_schema: ${APP_MYSQL_SCHEMA:provider}
-      dialect: org.hibernate.dialect.MySQLDialect
-      show_sql: false
+    properties:
+      hibernate:
+        default_schema: ${APP_POSTGRESQL_SCHEMA}
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: false
+
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: ${DATABASE_URL}
+    username: ${DATABASE_USERNAME}
+    password: ${DATABASE_PASSWORD}
+
   liquibase:
     enabled: true
     change-log: db/changelog/changelog-master.xml
-    default-schema: ${APP_MYSQL_SCHEMA:provider}
+    default_schema: ${APP_POSTGRESQL_SCHEMA}
 
 jwt:
   access:

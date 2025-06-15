@@ -1,0 +1,20 @@
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/bank?currentSchema=public
+    username: postgres
+    password: 123
+  jpa:
+    show-sql: ${SHOW_SQL:true}
+  liquibase:
+    default_schema: public
+    enabled: true
+    change-log: db/changelog/changelog-master.xml
+
+jwt:
+  access:
+    secret: 9CeoZ+XP0l4Bc+nHo9zZEM2Fv6vXby2WtptPE6XZVEoEQAieZK0r+ns3eiho7uu9j3mUv3gSeW+pCXKvBcq5ng==
+    expiration: 300
+
+app:
+  init-fake-data: ${INIT_FAKE_DATA:false}
