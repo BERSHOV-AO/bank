@@ -1,7 +1,7 @@
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/bank?currentSchema=public
+    url: jdbc:postgresql://localhost:5433/bank?currentSchema=public
     username: postgres
     password: 123
   jpa:
@@ -17,4 +17,4 @@ jwt:
     expiration: 300
 
 app:
-  init-fake-data: ${INIT_FAKE_DATA:false}
+  init-fake-data: ${INIT_FAKE_DATA:true}

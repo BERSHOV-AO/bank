@@ -14,8 +14,8 @@ import java.util.UUID;
 @NoArgsConstructor
 @Table(name = "mis_users")
 public class MisUser {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private UUID id;
 

@@ -1,0 +1,162 @@
+services:
+
+  # postgresql
+  mis-postgresql:
+    build: ./
+    container_name: mis-postgresql
+    environment:
+      POSTGRES_PASSWORD: 123
+    ports:
+      - "5432:5432"
+
+  # Новый отдельный Postgres-сервис с БД bank
+  mis-postgresql-bank:
+    image: postgres:latest
+    container_name: postgresql-bank
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 123
+      POSTGRES_DB: bank
+    ports:
+      - "5433:5432"  # чтобы не конфликтовать с основным Postgres
+#    volumes:
+#      - mis_postgresql_bank_data:/var/lib/postgresql/data
+
+  # clickhouse
+  mis-clickhouse:
+    container_name: mis-clickhouse
+    image: clickhouse/clickhouse-server:latest
+    ports:
+      - "8123:8123"   # HTTP интерфейс
+      - "9009:9000"   # TCP интерфейс
+    volumes:
+      - mis_clickhouse_data:/var/lib/clickhouse
+    environment:
+      - CLICKHOUSE_USER=clickhouse
+      - CLICKHOUSE_PASSWORD=123
+      - CLICKHOUSE_DB=audit
+
+  # зукипер для кафки
+  mis-zookeeper:
+    container_name: mis-zookeeper
+    image: wurstmeister/zookeeper
+    platform: linux/amd64
+    ports:
+      - "2181:2181"
+
+  # кафка
+  mis-kafka:
+    container_name: mis-kafka
+    image: wurstmeister/kafka
+    platform: linux/amd64
+    depends_on:
+      - mis-zookeeper
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_ZOOKEEPER_CONNECT: mis-zookeeper:2181
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: 'false'
+      KAFKA_LISTENERS: INTERNAL://0.0.0.0:9090,EXTERNAL://0.0.0.0:9092
+      KAFKA_ADVERTISED_LISTENERS: INTERNAL://mis-kafka:9090,EXTERNAL://127.0.0.1:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
+    volumes:
+      - ./kafka-data:/var/lib/kafka
+    command: ""
+    restart: unless-stopped
+
+  # создание топиков, если топиков не существует, после docker compose up -d и создания всех топиков
+  # можно закомментировать после первого запуска, что бы в дальнейшем контейнер не запускался
+  kafka-init:
+    image: wurstmeister/kafka
+    depends_on:
+      - mis-kafka
+      - mis-zookeeper
+    platform: linux/amd64
+    entrypoint: >
+      bash -c "
+      sleep 20 && \
+      (kafka-topics.sh --zookeeper mis-zookeeper:2181 --list | grep -q replica.directory || kafka-topics.sh --zookeeper mis-zookeeper:2181 --create --topic replica.directory --partitions 1 --replication-factor 1) && \
+      (kafka-topics.sh --zookeeper mis-zookeeper:2181 --list | grep -q dead-letter-queue || kafka-topics.sh --zookeeper mis-zookeeper:2181 --create --topic dead-letter-queue --partitions 1 --replication-factor 1) && \
+      (kafka-topics.sh --zookeeper mis-zookeeper:2181 --list | grep -q file-api.save-report || kafka-topics.sh --zookeeper mis-zookeeper:2181 --create --topic file-api.save-report --partitions 2 --replication-factor 1) && \
+      (kafka-topics.sh --zookeeper mis-zookeeper:2181 --list | grep -q audit.save-event || kafka-topics.sh --zookeeper mis-zookeeper:2181 --create --topic audit.save-event --partitions 1 --replication-factor 1) && \
+      (kafka-topics.sh --zookeeper mis-zookeeper:2181 --list | grep -q audit.save-event-test || kafka-topics.sh --zookeeper mis-zookeeper:2181 --create --topic audit.save-event-test --partitions 1 --replication-factor 1) && \
+      (kafka-topics.sh --zookeeper mis-zookeeper:2181 --list | grep -q dead-letter-queue-test || kafka-topics.sh --zookeeper mis-zookeeper:2181 --create --topic dead-letter-queue-test --partitions 1 --replication-factor 1) && \
+      (kafka-topics.sh --zookeeper mis-zookeeper:2181 --list | grep -q send-email-message-topic || kafka-topics.sh --zookeeper mis-zookeeper:2181 --create --topic send-email-message-topic --partitions 1 --replication-factor 1) && \
+      (kafka-topics.sh --zookeeper mis-zookeeper:2181 --list | grep -q send-telegram-message-topic || kafka-topics.sh --zookeeper mis-zookeeper:2181 --create --topic send-telegram-message-topic --partitions 1 --replication-factor 1) && \
+      (kafka-topics.sh --zookeeper mis-zookeeper:2181 --list | grep -q antivirus.check-file.request || kafka-topics.sh --zookeeper mis-zookeeper:2181 --create --topic antivirus.check-file.request --partitions 1 --replication-factor 1) && \
+      (kafka-topics.sh --zookeeper mis-zookeeper:2181 --list | grep -q antivirus.check-file.response || kafka-topics.sh --zookeeper mis-zookeeper:2181 --create --topic antivirus.check-file.response --partitions 1 --replication-factor 1)
+      "
+
+  # приложуха что бы смотреть состояние kafka (kafka-UI)
+  mis-kafka-ui:
+    container_name: mis-kafka-ui
+    image: provectuslabs/kafka-ui:latest
+    ports:
+      - "8088:8080"
+    environment:
+      KAFKA_CLUSTERS_0_NAME: local
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: mis-kafka:9090
+      DYNAMIC_CONFIG_ENABLED: 'true'
+
+  # redis
+  mis-redis:
+    container_name: mis-redis
+    image: redis:latest
+    ports:
+      - "6379:6379"
+    environment:
+      - "REDIS_PASSWORD=redis"
+      - "REDIS_USER=user"
+      - "REDIS_USER_PASSWORD=password"
+
+  # приложуха что бы смотреть состояние redis
+  mis-redis-insight:
+    container_name: mis-redis-insight
+    image: redis/redisinsight:latest
+    ports:
+      - "5540:5540"
+
+  # minio
+  mis-minio:
+    container_name: mis-minio
+    image: minio/minio
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - mis_minio_storage:/data
+    environment:
+      MINIO_ROOT_USER: masoud
+      MINIO_ROOT_PASSWORD: Strong#Pass#2022
+    command: server --console-address ":9001" /data
+
+  # антивирус ClamAV
+  mis-clamav:
+    container_name: mis-clamav
+    image: clamav/clamav-debian:stable
+    ports:
+      - "3310:3310"
+    environment:
+      - CLAMD_STARTUP_TIMEOUT=300
+      - CLAMAV_NO_FRESHCLAMD=false
+    volumes:
+      - mis_clamav_data:/var/lib/clamav
+    healthcheck:
+      test: ["CMD", "clamdscan", "--version"]
+      interval: 30s
+      timeout: 20s
+      start_period: 300s
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+    restart: unless-stopped
+    depends_on:
+      - mis-kafka
+
+volumes:
+  mis_minio_storage: {}
+  mis_clickhouse_data: {}
+  mis_clamav_data: {}
+#  mis_postgresql_bank_data: {}  # отдельный volume для новой БД
