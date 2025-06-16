@@ -24,7 +24,7 @@ public class MisUserServiceImpl implements MisUserService {
     public MisUser loadUserByLoginRequest(String login, String password) {
         MisUser misUser = misUserRepository.findByLoginWithRoles(login);
         validate(login, password, misUser);
-        return null;
+        return misUser;
     }
 
     @Override

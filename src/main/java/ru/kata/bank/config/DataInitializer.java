@@ -84,6 +84,6 @@ public class DataInitializer {
     public void addFakeData() {
         rolesMap = createRoles();
 
-        MisUser misUser1 = createMisUser("ac9360fd-75ba-46c1-81dd-b9f54962aca5", getRole(Set.of(RoleNames.MIS_ROLE)));
+        MisUser misUser1 = createMisUser("ac9360fd-75ba-46c1-81dd-b9f54962aca5", getRole(Set.of(RoleNames.CLIENT)));
     }
 }

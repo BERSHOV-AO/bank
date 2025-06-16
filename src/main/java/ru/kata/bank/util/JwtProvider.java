@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import ru.kata.bank.model.dto.JwtAuthentication;
 import ru.kata.bank.model.dto.JwtAuthenticationDto;
+import ru.kata.bank.model.dto.Roles;
 import ru.kata.bank.model.dto.TokenDateInfo;
 import ru.kata.bank.model.entity.MisUser;
 import ru.kata.bank.model.entity.Role;
@@ -165,13 +166,19 @@ public class JwtProvider {
         return jwtInfoToken;
     }
 
-    private Set<Role> getRoles(List<String> claims) {
+    private Set<Roles> getRoles(List<String> claims) {
         return Arrays.stream(RoleNames.values())
+//                .map(Enum::name)
+//                .toList()
+//                .stream()
+//                .filter(claims::contains)
+//                .map(role -> new Role())
+//                .collect(Collectors.toSet());
                 .map(Enum::name)
                 .toList()
                 .stream()
                 .filter(claims::contains)
-                .map(role -> new Role())
+                .map(Roles::new)
                 .collect(Collectors.toSet());
     }
 

@@ -18,7 +18,7 @@ public class JwtAuthentication implements Authentication {
 
     private boolean authenticated;
     private UUID userId;
-    private Set<Role> roles;
+    private Set<Roles> roles;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
