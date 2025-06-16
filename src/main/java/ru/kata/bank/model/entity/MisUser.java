@@ -25,6 +25,10 @@ public class MisUser {
     @Column(name = "password", nullable = false)
     private String password;
 
+    @Column(name = "is_enabled", nullable = false)
+    private Boolean isEnabled;
+
+
     /**
      * роли пользователя MisUser
      */

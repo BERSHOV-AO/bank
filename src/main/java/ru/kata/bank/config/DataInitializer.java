@@ -67,6 +67,7 @@ public class DataInitializer {
                 MisUser.builder()
                         .id(UUID.fromString(id))
                         .login(generatePhone(number))
+                        .isEnabled(true)
                         .password(generatePass(number))
                         .roles(roles)
                         .build()
@@ -83,11 +84,6 @@ public class DataInitializer {
     public void addFakeData() {
         rolesMap = createRoles();
 
-        MisUser misUser1 = createMisUser("ac9360fd-75ba-46c1-81dd-b9f54962aca5", getRole(Set.of(RoleNames.ADMIN)));
-        MisUser misUser2 = createMisUser("5708767e-f51f-4dac-a4c9-828446473aa4", getRole(Set.of(RoleNames.ADMIN)));
-
-        MisUser misUser3 = createMisUser("31c2cd49-939a-4227-ae8e-c95b0a4456b6", getRole(Set.of(RoleNames.CLIENT)));
-        MisUser misUser4 = createMisUser("04fe2814-0b70-40d5-8af4-a4f9a6d7dd3e", getRole(Set.of(RoleNames.CLIENT)));
-        MisUser misUser5 = createMisUser("1ec65427-797c-48a5-9a2c-82ced26053c5", getRole(Set.of(RoleNames.CLIENT)));
+        MisUser misUser1 = createMisUser("ac9360fd-75ba-46c1-81dd-b9f54962aca5", getRole(Set.of(RoleNames.MIS_ROLE)));
     }
 }
