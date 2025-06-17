@@ -12,13 +12,13 @@ import ru.kata.bank.service.AuthBusinessService;
 
 @Slf4j
 @RestController
-@PreAuthorize("hasRole('CLIENT')")
+@PreAuthorize("hasAnyAuthority('CLIENT')")
 @RequestMapping("/api/bank")
 @RequiredArgsConstructor
 public class TestController {
 
     @GetMapping("/test")
     public String login() {
-        return "OK";
+        return "DONE";
     }
 }
