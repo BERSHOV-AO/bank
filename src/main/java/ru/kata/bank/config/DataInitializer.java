@@ -6,10 +6,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
-import ru.kata.bank.model.entity.MisUser;
+import ru.kata.bank.model.entity.Client;
 import ru.kata.bank.model.entity.Role;
 import ru.kata.bank.model.enums.RoleNames;
-import ru.kata.bank.repository.MisUserRepository;
+import ru.kata.bank.repository.ClientRepository;
 import ru.kata.bank.repository.RoleRepository;
 
 import java.util.*;
@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 public class DataInitializer {
 
     private final RoleRepository roleRepository;
-    private final MisUserRepository userRepository;
+    private final ClientRepository clientRepository;
     private final PasswordEncoder passwordEncoder;
 
     private int number = 0;
@@ -60,11 +60,11 @@ public class DataInitializer {
         return passwordEncoder.encode(String.format("password-%s", id));
     }
 
-    private MisUser createMisUser(String id, Set<Role> roles) {
+    private Client createMisUser(String id, Set<Role> roles) {
         int number = getNumber();
 
-        return userRepository.save(
-                MisUser.builder()
+        return clientRepository.save(
+                Client.builder()
                         .id(UUID.fromString(id))
                         .login(generatePhone(number))
                         .isEnabled(true)
@@ -84,6 +84,6 @@ public class DataInitializer {
     public void addFakeData() {
         rolesMap = createRoles();
 
-        MisUser misUser1 = createMisUser("ac9360fd-75ba-46c1-81dd-b9f54962aca5", getRole(Set.of(RoleNames.CLIENT)));
+        Client client1 = createMisUser("ac9360fd-75ba-46c1-81dd-b9f54962aca5", getRole(Set.of(RoleNames.CLIENT)));
     }
 }

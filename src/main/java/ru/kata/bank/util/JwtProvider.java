@@ -9,11 +9,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
-import ru.kata.bank.model.dto.JwtAuthentication;
-import ru.kata.bank.model.dto.JwtAuthenticationDto;
-import ru.kata.bank.model.dto.Roles;
+import ru.kata.bank.model.dto.auth.JwtAuthentication;
+import ru.kata.bank.model.dto.auth.JwtAuthenticationDto;
+import ru.kata.bank.model.dto.auth.Roles;
 import ru.kata.bank.model.dto.TokenDateInfo;
-import ru.kata.bank.model.entity.MisUser;
+import ru.kata.bank.model.entity.Client;
 import ru.kata.bank.model.entity.Role;
 import ru.kata.bank.model.enums.RoleNames;
 import ru.kata.bank.model.exception.UnauthorizedException;
@@ -66,14 +66,14 @@ public class JwtProvider {
                 .build();
     }
 
-    public String generateAccessToken(MisUser user) {
+    public String generateAccessToken(Client user) {
         return Jwts.builder()
                 .signWith(jwtAccessSecret)
                 .setPayload(createPayload(user, jwtAccessExpiration))
                 .compact();
     }
 
-    public String generateRefreshToken(MisUser user) {
+    public String generateRefreshToken(Client user) {
         return Jwts.builder()
                 .signWith(jwtRefreshSecret)
                 .setPayload(createPayload(user, jwtRefreshExpiration))
@@ -106,7 +106,7 @@ public class JwtProvider {
         return false;
     }
 
-    private String createPayload(MisUser user, long expiration) {
+    private String createPayload(Client user, long expiration) {
         try {
             return objectMapper.writeValueAsString(
                     JwtAuthenticationDto.builder()
@@ -120,7 +120,7 @@ public class JwtProvider {
         }
     }
 
-    private List<String> getRolesNames(MisUser user) {
+    private List<String> getRolesNames(Client user) {
         return user.getRoles().stream()
                 .map(Role::getName)
                 .toList();
@@ -168,12 +168,6 @@ public class JwtProvider {
 
     private Set<Roles> getRoles(List<String> claims) {
         return Arrays.stream(RoleNames.values())
-//                .map(Enum::name)
-//                .toList()
-//                .stream()
-//                .filter(claims::contains)
-//                .map(role -> new Role())
-//                .collect(Collectors.toSet());
                 .map(Enum::name)
                 .toList()
                 .stream()

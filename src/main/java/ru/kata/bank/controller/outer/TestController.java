@@ -1,14 +1,11 @@
 package ru.kata.bank.controller.outer;
 
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
-import ru.kata.bank.model.dto.JwtResponse;
-import ru.kata.bank.model.dto.LoginRequest;
-import ru.kata.bank.service.AuthBusinessService;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @RestController

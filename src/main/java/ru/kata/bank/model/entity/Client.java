@@ -12,8 +12,8 @@ import java.util.UUID;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "mis_users")
-public class MisUser {
+@Table(name = "clients")
+public class Client {
 
     @Id
     @Column(name = "id")
@@ -28,14 +28,13 @@ public class MisUser {
     @Column(name = "is_enabled", nullable = false)
     private Boolean isEnabled;
 
-
     /**
-     * роли пользователя MisUser
+     * роли пользователя Client
      */
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
-            name = "mis_users_roles",
-            joinColumns = @JoinColumn(name = "user_id"),
+            name = "client_roles",
+            joinColumns = @JoinColumn(name = "client_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
 }

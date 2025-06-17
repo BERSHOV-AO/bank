@@ -1,4 +1,4 @@
-package ru.kata.bank.model.dto;
+package ru.kata.bank.model.dto.auth;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -5,13 +5,12 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-//import jakarta.ws.rs.ForbiddenException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-import ru.kata.bank.model.dto.JwtAuthentication;
+import ru.kata.bank.model.dto.auth.JwtAuthentication;
 import ru.kata.bank.model.exception.UnauthorizedException;
 
 import java.io.IOException;
@@ -37,11 +36,9 @@ public class JwtFilter extends OncePerRequestFilter {
                     SecurityContextHolder.getContext().setAuthentication(authentication);
                     Objects.requireNonNull(filterChain).doFilter(request, response);
                 } else {
-                //    throw new ForbiddenException("Access token forbidden");
                     throw new UnauthorizedException("Access token forbidden");
                 }
             } else {
-            //    throw new ForbiddenException("Access token expired");
                 throw new UnauthorizedException("Access token expired");
             }
         } else {

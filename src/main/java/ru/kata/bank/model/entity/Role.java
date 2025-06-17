@@ -36,7 +36,7 @@ public class Role implements GrantedAuthority {
      * пользователи владеющие этой ролью
      */
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "roles")
-    private Set<MisUser> users;
+    private Set<Client> users;
 
     @Override
     public String getAuthority() {
