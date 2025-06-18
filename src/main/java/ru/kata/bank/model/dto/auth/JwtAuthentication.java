@@ -3,6 +3,7 @@ package ru.kata.bank.model.dto.auth;
 import lombok.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import ru.kata.bank.model.entity.Role;
 
 import java.util.Collection;
 import java.util.Set;
@@ -17,7 +18,7 @@ public class JwtAuthentication implements Authentication {
 
     private boolean authenticated;
     private UUID userId;
-    private Set<Roles> roles;
+    private Set<Role> roles;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -53,5 +54,6 @@ public class JwtAuthentication implements Authentication {
     public String getName() {
         return String.valueOf(userId);
     }
+
 }
 

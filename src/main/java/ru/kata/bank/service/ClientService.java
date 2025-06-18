@@ -1,11 +1,11 @@
 package ru.kata.bank.service;
 
-import ru.kata.bank.model.entity.Client;
+import ru.kata.bank.model.entity.User;
 
 import java.util.UUID;
 
 public interface ClientService {
-    Client loadUserByLoginRequest(String login, String password);
+    User loadUserByLoginRequest(String login, String password);
 
-    Client getUserById(UUID id);
+    User getUserById(UUID id);
 }

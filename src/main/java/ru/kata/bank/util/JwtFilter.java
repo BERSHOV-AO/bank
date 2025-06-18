@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -36,10 +37,10 @@ public class JwtFilter extends OncePerRequestFilter {
                     SecurityContextHolder.getContext().setAuthentication(authentication);
                     Objects.requireNonNull(filterChain).doFilter(request, response);
                 } else {
-                    throw new UnauthorizedException("Access token forbidden");
+                    throw new BadCredentialsException("Access token forbidden");
                 }
             } else {
-                throw new UnauthorizedException("Access token expired");
+                throw new BadCredentialsException("Access token expired");
             }
         } else {
             Objects.requireNonNull(filterChain).doFilter(request, response);

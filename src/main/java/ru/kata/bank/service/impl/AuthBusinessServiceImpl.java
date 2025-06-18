@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.kata.bank.model.dto.JwtResponse;
 import ru.kata.bank.model.dto.LoginRequest;
-import ru.kata.bank.model.entity.Client;
+import ru.kata.bank.model.entity.User;
 import ru.kata.bank.service.AuthBusinessService;
 import ru.kata.bank.service.ClientService;
 import ru.kata.bank.util.JwtProvider;
@@ -19,7 +19,7 @@ public class AuthBusinessServiceImpl implements AuthBusinessService {
 
     @Override
     public JwtResponse login(String login, String password) {
-        Client client = clientService.loadUserByLoginRequest(login, password);
+        User client = clientService.loadUserByLoginRequest(login, password);
 
         return JwtResponse.builder()
                 .accessToken(jwtProvider.generateAccessToken(client))
