@@ -12,7 +12,8 @@ import ru.kata.bank.model.dto.contract.TransactionResponse;
 
 @Slf4j
 @RestController
-@PreAuthorize("hasAnyAuthority('CLIENT')")
+//@PreAuthorize("hasAnyAuthority('CLIENT')")
+@PreAuthorize("hasAnyRole('CLIENT')")
 @RequestMapping("/api/bank/transaction")
 @RequiredArgsConstructor
 public class TransactionController {

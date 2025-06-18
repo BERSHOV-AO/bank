@@ -17,24 +17,14 @@ import java.util.Set;
 @NoArgsConstructor
 @Table(name = "roles")
 public class Role implements GrantedAuthority {
-
-    /**
-     * id генерируется тут
-     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
-    /**
-     * имя роли
-     */
     @Column(name = "name", nullable = false)
     private String name;
 
-    /**
-     * пользователи владеющие этой ролью
-     */
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "roles")
     private Set<Client> users;
 
