@@ -12,12 +12,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import ru.kata.bank.model.dto.auth.JwtAuthentication;
 import ru.kata.bank.model.dto.auth.JwtAuthenticationDto;
-import ru.kata.bank.model.dto.auth.Roles;
-import ru.kata.bank.model.dto.TokenDateInfo;
+import ru.kata.bank.model.dto.auth.TokenDateInfo;
 import ru.kata.bank.model.entity.Client;
 import ru.kata.bank.model.entity.Role;
 import ru.kata.bank.model.enums.RoleNames;
-import ru.kata.bank.model.exception.UnauthorizedException;
 
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;

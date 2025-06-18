@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ru.kata.bank.model.dto.JwtResponse;
-import ru.kata.bank.model.dto.LoginRequest;
+import ru.kata.bank.model.dto.auth.JwtResponse;
+import ru.kata.bank.model.dto.auth.LoginRequest;
 import ru.kata.bank.service.AuthBusinessService;
 
 @Slf4j

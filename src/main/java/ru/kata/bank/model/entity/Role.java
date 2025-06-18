@@ -22,11 +22,11 @@ public class Role implements GrantedAuthority {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "name", nullable = false)
+    @Column(name = "name", unique = true, nullable = false)
     private String name;
 
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "roles")
-    private Set<Client> users;
+    private Set<Client> clients;
 
     @Override
     public String getAuthority() {

@@ -49,7 +49,7 @@ public class SecurityConfig {
                                 "/api/auth/login",
                                 "/api/auth/refresh"
                         ).permitAll()
-                        .requestMatchers("/api/bank/transaction/**").hasAnyRole("CLIENT")
+                        .requestMatchers("/api/bank/transaction_status/**").hasAnyRole("CLIENT", "ADMIN")
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);

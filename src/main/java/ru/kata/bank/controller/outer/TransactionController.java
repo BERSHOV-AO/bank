@@ -10,15 +10,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ru.kata.bank.model.dto.contract.TransactionResponse;
 
+//@PreAuthorize("hasAnyAuthority('CLIENT')")
 @Slf4j
 @RestController
-//@PreAuthorize("hasAnyAuthority('CLIENT')")
-@PreAuthorize("hasAnyRole('CLIENT')")
-@RequestMapping("/api/bank/transaction")
 @RequiredArgsConstructor
+//@PreAuthorize("hasAnyRole('CLIENT')")
+//@PreAuthorize("hasAnyAuthority('CLIENT', 'ADMIN')")
+@RequestMapping("/api/bank")
 public class TransactionController {
 
-    @GetMapping("/status")
+    @GetMapping("/transaction_status")
     public ResponseEntity<TransactionResponse> getTransactionStatus(@RequestParam long numberTransaction) {
         return ResponseEntity.ok(new TransactionResponse("DONE: " + numberTransaction));
     }

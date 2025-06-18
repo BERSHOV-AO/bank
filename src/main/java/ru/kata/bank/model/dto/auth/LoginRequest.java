@@ -1,4 +1,4 @@
-package ru.kata.bank.model.dto;
+package ru.kata.bank.model.dto.auth;
 
 import jakarta.validation.constraints.NotBlank;
 
