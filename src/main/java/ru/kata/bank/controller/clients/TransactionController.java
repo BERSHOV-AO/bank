@@ -1,4 +1,4 @@
-package ru.kata.bank.controller.outer;
+package ru.kata.bank.controller.clients;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

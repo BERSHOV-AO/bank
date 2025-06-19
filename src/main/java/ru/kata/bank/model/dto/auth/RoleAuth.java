@@ -10,7 +10,7 @@ import java.util.Objects;
 @Getter
 @Setter
 @AllArgsConstructor
-public class Roles implements GrantedAuthority {
+public class RoleAuth implements GrantedAuthority {
     private String name;
 
     @Override
@@ -26,7 +26,7 @@ public class Roles implements GrantedAuthority {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        Roles roles = (Roles) o;
+        RoleAuth roles = (RoleAuth) o;
         return Objects.equals(name, roles.name);
     }
 

@@ -3,7 +3,6 @@ package ru.kata.bank.model.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
-import ru.kata.bank.model.dto.auth.Roles;
 
 import java.util.Objects;
 import java.util.Set;
