@@ -14,7 +14,7 @@ import ru.kata.bank.service.AuthBusinessService;
 
 @Slf4j
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/api/bank")
 @RequiredArgsConstructor
 public class AuthController {
 
