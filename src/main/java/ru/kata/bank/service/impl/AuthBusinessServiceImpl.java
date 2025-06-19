@@ -23,7 +23,6 @@ public class AuthBusinessServiceImpl implements AuthBusinessService {
 
         return JwtResponse.builder()
                 .accessToken(jwtProvider.generateAccessToken(client))
-                .refreshToken(jwtProvider.generateRefreshToken(client))
                 .build();
     }
 

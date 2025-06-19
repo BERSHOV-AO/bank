@@ -15,9 +15,6 @@ jwt:
   access:
     secret: 9CeoZ+XP0l4Bc+nHo9zZEM2Fv6vXby2WtptPE6XZVEoEQAieZK0r+ns3eiho7uu9j3mUv3gSeW+pCXKvBcq5ng==
     expiration: 300
-  refresh:
-    secret: 72A7St1ySWdvyyvqYLgiPOw1/yVhBNUZEU7iiOo/ETdX0ghkk+K9Kk5HNK8dAqo28RoDNttL3j+HjAg4s/67IA==
-    expiration: 3600
 
 app:
   init-fake-data: ${INIT_FAKE_DATA:false}

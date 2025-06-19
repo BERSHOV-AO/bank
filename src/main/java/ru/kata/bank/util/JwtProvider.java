@@ -11,7 +11,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import ru.kata.bank.model.dto.auth.JwtAuthentication;
 import ru.kata.bank.model.dto.auth.JwtAuthenticationDto;
-import ru.kata.bank.model.dto.TokenDateInfo;
 import ru.kata.bank.model.entity.Client;
 import ru.kata.bank.model.entity.Role;
 import ru.kata.bank.model.enums.RoleNames;
@@ -28,41 +27,15 @@ import java.util.stream.Collectors;
 @Component
 public class JwtProvider {
     private final SecretKey jwtAccessSecret;
-    private final SecretKey jwtRefreshSecret;
     private final long jwtAccessExpiration;
-    private final long jwtRefreshExpiration;
     private final ObjectMapper objectMapper;
 
     public JwtProvider(@Value("${jwt.access.secret}") String jwtAccessSecret,
-                       @Value("${jwt.refresh.secret}") String jwtRefreshSecret,
                        @Value("${jwt.access.expiration}") long jwtAccessExpiration,
-                       @Value("${jwt.refresh.expiration}") long jwtRefreshExpiration,
                        ObjectMapper objectMapper) {
         this.jwtAccessSecret = Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtAccessSecret));
-        this.jwtRefreshSecret = Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtRefreshSecret));
         this.jwtAccessExpiration = jwtAccessExpiration;
-        this.jwtRefreshExpiration = jwtRefreshExpiration;
         this.objectMapper = objectMapper;
-    }
-
-    public UUID getUserIdFromRefreshToken(String refreshToken) throws JsonProcessingException {
-        String[] chunks = refreshToken.split("\\.");
-        Base64.Decoder decoder = Base64.getUrlDecoder();
-        String payload = new String(decoder.decode(chunks[1]), StandardCharsets.UTF_8);
-        JwtAuthenticationDto requestDto = objectMapper.readValue(payload, JwtAuthenticationDto.class);
-        validateRequest(requestDto);
-        return requestDto.user();
-    }
-
-    public TokenDateInfo getDateToken(String refreshToken) throws JsonProcessingException {
-        String[] chunks = refreshToken.split("\\.");
-        Base64.Decoder decoder = Base64.getUrlDecoder();
-        String payload = new String(decoder.decode(chunks[1]), StandardCharsets.UTF_8);
-        JwtAuthenticationDto requestDto = objectMapper.readValue(payload, JwtAuthenticationDto.class);
-        validateRequest(requestDto);
-        return TokenDateInfo.builder().createToken(requestDto.createDate())
-                .expirationToken(requestDto.expirationDate().getTime() - getCreateDate().getTime())
-                .build();
     }
 
     public String generateAccessToken(Client user) {
@@ -70,26 +43,6 @@ public class JwtProvider {
                 .signWith(jwtAccessSecret)
                 .setPayload(createPayload(user, jwtAccessExpiration))
                 .compact();
-    }
-
-    public String generateRefreshToken(Client user) {
-        return Jwts.builder()
-                .signWith(jwtRefreshSecret)
-                .setPayload(createPayload(user, jwtRefreshExpiration))
-                .compact();
-    }
-
-    public boolean validateRefreshToken(String refreshToken) {
-        try {
-            Jwts.parserBuilder()
-                    .setSigningKey(jwtRefreshSecret)
-                    .build()
-                    .parseClaimsJws(refreshToken);
-            return true;
-        } catch (Exception e) {
-            log.error("invalid refresh token", e);
-        }
-        return false;
     }
 
     public boolean validateAccessToken(String accessToken) {
