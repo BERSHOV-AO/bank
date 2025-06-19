@@ -12,6 +12,7 @@ spring:
 jwt:
   access:
     secret: 9CeoZ+XP0l4Bc+nHo9zZEM2Fv6vXby2WtptPE6XZVEoEQAieZK0r+ns3eiho7uu9j3mUv3gSeW+pCXKvBcq5ng==
+    expiration: 300
 
 app:
   init-fake-data: ${INIT_FAKE_DATA:false}

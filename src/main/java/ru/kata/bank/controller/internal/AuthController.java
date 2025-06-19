@@ -1,4 +1,4 @@
-package ru.kata.bank.controller.auth;
+package ru.kata.bank.controller.internal;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

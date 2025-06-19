@@ -124,11 +124,11 @@ public class JwtProvider {
                 .toList()
                 .stream()
                 .filter(claims::contains)
-                .map(name -> {
-                    Role role = new Role();
-                    role.setName(name);
-                    return role;
-                })
+                .map(name ->
+                        Role.builder()
+                                .name(name)
+                                .build()
+                )
                 .collect(Collectors.toSet());
     }
 

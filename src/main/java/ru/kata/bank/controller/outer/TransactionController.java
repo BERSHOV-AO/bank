@@ -1,4 +1,4 @@
-package ru.kata.bank.controller.clients;
+package ru.kata.bank.controller.outer;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ru.kata.bank.model.dto.contract.TransactionResponse;
+import ru.kata.bank.model.enums.TransactionStatus;
+
+import java.security.Principal;
 
 @Slf4j
 @RestController
@@ -17,8 +20,11 @@ import ru.kata.bank.model.dto.contract.TransactionResponse;
 @RequiredArgsConstructor
 public class TransactionController {
 
+
     @GetMapping("/status")
-    public ResponseEntity<TransactionResponse> getTransactionStatus(@RequestParam long numberTransaction) {
-        return ResponseEntity.ok(new TransactionResponse("DONE: " + numberTransaction));
+    public ResponseEntity<TransactionResponse> getTransaction(@RequestParam long numberTransaction, Principal principal) {
+
+        log.debug("[getTransaction] numberTransaction: {} , principal.getName() {} ", numberTransaction, principal.getName());
+        return ResponseEntity.ok(new TransactionResponse(TransactionStatus.DONE.toString()));
     }
 }

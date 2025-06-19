@@ -1,13 +1,10 @@
--- Создание общей последовательности для Hibernate (если используется)
 create sequence if not exists hibernate_sequence start with 1 increment by 1;
 
--- Таблица ролей
 create table if not exists roles (
     id bigserial primary key,
     name varchar(50) not null unique
     );
 
--- Таблица клиентов (пользователей MIS)
 create table if not exists clients (
     id uuid primary key,
     login varchar(100) not null unique,
@@ -15,7 +12,6 @@ create table if not exists clients (
     is_enabled boolean not null
     );
 
--- Связующая таблица ролей и клиентов
 create table if not exists client_roles (
     client_id uuid not null,
     role_id bigint not null,

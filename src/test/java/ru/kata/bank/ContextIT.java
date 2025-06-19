@@ -12,7 +12,7 @@ import org.springframework.boot.testcontainers.service.connection.ServiceConnect
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
-import org.testcontainers.containers.MySQLContainer;
+import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
@@ -36,6 +36,6 @@ public class ContextIT {
 
     @Container
     @ServiceConnection
-    public static MySQLContainer<?> mySQLContainer = new MySQLContainer<>("mysql:8.0.33")
+    public static PostgreSQLContainer<?> postgreSQLContainer = new PostgreSQLContainer<>("postgres:latest")
             .withInitScript("scripts/initSchema.sql");
 }
