@@ -1,0 +1,17 @@
+spring:
+  jpa:
+    properties:
+      hibernate:
+        default_schema: test
+    show-sql: ${SHOW_SQL:true}
+
+  liquibase:
+    change-log: db/changelog/changelog-test.xml
+    default-schema: test
+
+jwt:
+  access:
+    secret: 9CeoZ+XP0l4Bc+nHo9zZEM2Fv6vXby2WtptPE6XZVEoEQAieZK0r+ns3eiho7uu9j3mUv3gSeW+pCXKvBcq5ng==
+
+app:
+  init-fake-data: ${INIT_FAKE_DATA:false}
